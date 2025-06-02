@@ -1,13 +1,12 @@
 package seeders
 
 import (
-	"user-service/constants"
-	"user-service/domain/models"
-
 	"github.com/google/uuid"
 	"github.com/sirupsen/logrus"
 	"golang.org/x/crypto/bcrypt"
 	"gorm.io/gorm"
+	"user-service/constants"
+	"user-service/domain/models"
 )
 
 func RunUserSeeder(db *gorm.DB) {
@@ -17,8 +16,8 @@ func RunUserSeeder(db *gorm.DB) {
 		Name:        "Administrator",
 		Username:    "admin",
 		Password:    string(password),
-		Email:       "admin@localhost",
-		PhoneNumber: "08123456789",
+		PhoneNumber: "085712345678",
+		Email:       "admin@gmail.com",
 		RoleID:      constants.Admin,
 	}
 

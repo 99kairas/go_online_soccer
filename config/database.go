@@ -2,11 +2,10 @@ package config
 
 import (
 	"fmt"
-	"net/url"
-	"time"
-
 	"gorm.io/driver/postgres"
 	"gorm.io/gorm"
+	"net/url"
+	"time"
 )
 
 func InitDatabase() (*gorm.DB, error) {
@@ -19,6 +18,7 @@ func InitDatabase() (*gorm.DB, error) {
 		config.Database.Port,
 		config.Database.Name,
 	)
+
 	db, err := gorm.Open(postgres.Open(uri), &gorm.Config{})
 	if err != nil {
 		return nil, err
@@ -28,10 +28,10 @@ func InitDatabase() (*gorm.DB, error) {
 	if err != nil {
 		return nil, err
 	}
-	sqlDB.SetMaxIdleConns(config.Database.MaxIdleConnection)
-	sqlDB.SetMaxOpenConns(config.Database.MaxOpenConnection)
-	sqlDB.SetConnMaxLifetime(time.Duration(config.Database.MaxLifetimeConnection) * time.Second)
-	sqlDB.SetConnMaxIdleTime(time.Duration(config.Database.MaxIdleConnection) * time.Second)
 
+	sqlDB.SetMaxIdleConns(config.Database.MaxIdleConnections)
+	sqlDB.SetMaxOpenConns(config.Database.MaxOpenConnections)
+	sqlDB.SetConnMaxLifetime(time.Duration(config.Database.MaxLifeTimeConnection) * time.Second)
+	sqlDB.SetConnMaxIdleTime(time.Duration(config.Database.MaxIdleTime) * time.Second)
 	return db, nil
 }

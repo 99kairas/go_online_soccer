@@ -1,9 +1,8 @@
 package repositories
 
 import (
-	repositories "user-service/repositories/users"
-
 	"gorm.io/gorm"
+	repositories "user-service/repositories/user"
 )
 
 type Registry struct {

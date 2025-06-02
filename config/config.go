@@ -1,10 +1,10 @@
 package config
 
 import (
-	"os"
-	"user-service/common/utils"
-
 	"github.com/sirupsen/logrus"
+	_ "github.com/spf13/viper/remote"
+	"os"
+	"user-service/common/util"
 )
 
 var Config AppConfig
@@ -15,10 +15,10 @@ type AppConfig struct {
 	AppEnv                string   `json:"appEnv"`
 	SignatureKey          string   `json:"signatureKey"`
 	Database              Database `json:"database"`
-	RateLimiterMaxRequest int      `json:"rateLimiterMaxRequest"`
+	RateLimiterMaxRequest float64  `json:"rateLimiterMaxRequest"`
 	RateLimiterTimeSecond int      `json:"rateLimiterTimeSecond"`
-	JWTSecretKey          string   `json:"jwtSecretKey"`
-	JWTExpirationTime     int      `json:"jwtExpirationTime"`
+	JwtSecretKey          string   `json:"jwtSecretKey"`
+	JwtExpirationTime     int      `json:"jwtExpirationTime"`
 }
 
 type Database struct {
@@ -27,17 +27,17 @@ type Database struct {
 	Name                  string `json:"name"`
 	Username              string `json:"username"`
 	Password              string `json:"password"`
-	MaxOpenConnection     int    `json:"maxOpenConnection"`
-	MaxLifetimeConnection int    `json:"maxLifetimeConnection"`
-	MaxIdleConnection     int    `json:"maxIdleConnection"`
+	MaxOpenConnections    int    `json:"maxOpenConnections"`
+	MaxLifeTimeConnection int    `json:"maxLifeTimeConnection"`
+	MaxIdleConnections    int    `json:"maxIdleConnections"`
 	MaxIdleTime           int    `json:"maxIdleTime"`
 }
 
 func Init() {
-	err := utils.BindFromJSON(&Config, "config.json", ".")
+	err := util.BindFromJSON(&Config, "config.json", ".")
 	if err != nil {
 		logrus.Infof("failed to bind config: %v", err)
-		err = utils.BindFromConsul(&Config, os.Getenv("CONSUL_HTTP_URL"), os.Getenv("CONSUL_HTTP_KEY"))
+		err = util.BindFromConsul(&Config, os.Getenv("CONSUL_HTTP_URL"), os.Getenv("CONSUL_HTTP_PATH"))
 		if err != nil {
 			panic(err)
 		}

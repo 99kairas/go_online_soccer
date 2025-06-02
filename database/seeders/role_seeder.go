@@ -1,10 +1,9 @@
 package seeders
 
 import (
-	"user-service/domain/models"
-
 	"github.com/sirupsen/logrus"
 	"gorm.io/gorm"
+	"user-service/domain/models"
 )
 
 func RunRoleSeeder(db *gorm.DB) {

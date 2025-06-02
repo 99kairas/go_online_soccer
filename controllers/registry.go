@@ -1,7 +1,7 @@
 package controllers
 
 import (
-	controllers "user-service/controllers/users"
+	controllers "user-service/controllers/user"
 	"user-service/services"
 )
 

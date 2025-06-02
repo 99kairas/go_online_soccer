@@ -2,7 +2,7 @@ package services
 
 import (
 	"user-service/repositories"
-	services "user-service/services/users"
+	services "user-service/services/user"
 )
 
 type Registry struct {

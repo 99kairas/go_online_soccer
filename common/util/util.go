@@ -1,18 +1,18 @@
-package utils
+package util
 
 import (
+	"github.com/sirupsen/logrus"
+	"github.com/spf13/viper"
+	_ "github.com/spf13/viper/remote"
 	"os"
 	"reflect"
 	"strconv"
-
-	"github.com/sirupsen/logrus"
-	"github.com/spf13/viper"
 )
 
-func BindFromJSON(destination any, filename, path string) error {
+func BindFromJSON(dest any, filename, path string) error {
 	v := viper.New()
 
-	v.SetConfigType(`json`)
+	v.SetConfigType("json")
 	v.AddConfigPath(path)
 	v.SetConfigName(filename)
 
@@ -21,9 +21,9 @@ func BindFromJSON(destination any, filename, path string) error {
 		return err
 	}
 
-	err = v.Unmarshal(&destination)
+	err = v.Unmarshal(&dest)
 	if err != nil {
-		logrus.Errorf("failed to unmarshal : %v", err)
+		logrus.Errorf("failed to unmarshal: %v", err)
 		return err
 	}
 
@@ -58,8 +58,6 @@ func SetEnvFromConsulKV(v *viper.Viper) error {
 			val = strconv.Itoa(int(valOf.Float()))
 		case reflect.Bool:
 			val = strconv.FormatBool(valOf.Bool())
-		default:
-			panic("unsupported type")
 		}
 
 		err = os.Setenv(k, val)
@@ -72,10 +70,9 @@ func SetEnvFromConsulKV(v *viper.Viper) error {
 	return nil
 }
 
-func BindFromConsul(destination any, endPoint, path string) error {
+func BindFromConsul(dest any, endPoint, path string) error {
 	v := viper.New()
-
-	v.SetConfigType(`json`)
+	v.SetConfigType("json")
 	err := v.AddRemoteProvider("consul", endPoint, path)
 	if err != nil {
 		logrus.Errorf("failed to add remote provider: %v", err)
@@ -88,7 +85,7 @@ func BindFromConsul(destination any, endPoint, path string) error {
 		return err
 	}
 
-	err = v.Unmarshal(&destination)
+	err = v.Unmarshal(&dest)
 	if err != nil {
 		logrus.Errorf("failed to unmarshal: %v", err)
 		return err
@@ -96,7 +93,7 @@ func BindFromConsul(destination any, endPoint, path string) error {
 
 	err = SetEnvFromConsulKV(v)
 	if err != nil {
-		logrus.Errorf("failed to set env: %v", err)
+		logrus.Errorf("failed to set env from consul kv: %v", err)
 		return err
 	}
 

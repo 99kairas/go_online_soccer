@@ -1,4 +1,4 @@
-package errorConstants
+package error
 
 import "errors"
 
